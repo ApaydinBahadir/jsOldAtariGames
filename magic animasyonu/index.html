@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="tr" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>magic jewelery </title>
+    <style>
+    @font-face {
+   font-family: myFirstFont;
+   src: url(pixel.ttf);
+}
+   body {
+     background: black;
+     font-size: 2em;
+     color: red;
+     text-align: center;
+   }
+   div {
+  font-family: myFirstFont;
+  font-size: 5vh;
+}
+canvas{
+  height: 75vh;
+  border:2px solid white;
+}
+#sag{height: 75vh;
+width: 30vh;}
+#sol{height: 75vh;
+width: 20vh; }
+ </style>
+  </head>
+  <body>
+<img  id="img"src="tiles.png"style="display:none" alt="">
+<canvas id="canvas" width="770" height="700"></canvas>
+  </body>
+  <script type="text/javascript">
+
+class game {
+  constructor() {
+    this.cvs=document.getElementById('canvas');
+    this.ctx=this.cvs.getContext("2d");
+
+    this.images = new Image();
+    this.images[0]= document.getElementById("img");
+
+    this.ses = new Array();
+
+    this.moon = {
+      pos:{x:600,y:-45},
+      speed:1}
+      this.moon2 = {
+        pos:{x:600,y:-710},
+        speed:1}
+    this.star1 = {
+      pos:{x:630,y:200},
+      speed:0.5}
+    this.star2 = {
+      pos:{x:645,y:280},
+      speed:1.2}
+    this.star3 = {
+      pos:{x:620,y:240},
+      speed:2}
+    this.star4 = {
+      pos:{x:645,y:450},
+      speed:0.3}
+      this.sp=-45
+
+      this.a=1
+      this.b=2
+      this.c=3
+
+this.dropcounter =0
+this.dropinterval =1000
+
+this.puzzle=[[0,this.a,0],
+[0,this.b,0],
+[0,this.c,0],
+]
+this.puzzle1=[[0,this.c,0],
+[0,this.a,0],
+[0,this.b,0],
+]
+this.puzzle2=[[0,this.b,0],
+[0,this.c,0],
+[0,this.a,0],
+]
+this.player = {
+  pos:{x:0,
+  y:0},
+};
+this.matrixs = new Array();
+this.matrixs[0]=this.puzzle
+this.matrixs[1]=this.puzzle1
+this.matrixs[2]=this.puzzle2
+this.matrixs[3]=this.puzzle
+
+this.lastTime=0
+
+function pieces(w,b) {
+  const matrix=[];
+  while (b--) {
+    matrix.push(new Array(w).fill(0))
+  }
+  return matrix}
+
+this.alan = pieces(11,24);
+}
+
+/*drawMatrix(sekil,offset) {
+sekil.forEach((row, y) => {
+  row.forEach((value,x) => {
+  if (value==1) {
+   this.ctx.drawImage(,x+offset.x,y+offset.y,1,1)
+ }
+ if (value==2) {
+   this.ctx.drawImage(,x+offset.x,y+offset.y,1,1)
+ }
+ if (value==3) {
+   this.ctx.drawImage(,x+offset.x,y+offset.y,1,1)}
+   if (value==4) {
+    this.ctx.drawImage(,x+offset.x,y+offset.y,1,1)
+  }
+  if (value==5) {
+    this.ctx.drawImage(,x+offset.x,y+offset.y,1,1)}
+  if (value==6) {
+    this.ctx.drawImage(,x+offset.x,y+offset.y,1,1)}
+    if (value==11) {
+      this.ctx.drawImage(,x+offset.x,y+offset.y,1,1)}
+    if (value==9) {
+      this.ctx.drawImage(,x+offset.x,y+offset.y,1,1)}
+});
+});
+}*/
+
+alanisakla() {
+   matrixs[h].forEach((row, y) => {
+  row.forEach((value, x) => {
+    if (value!=0) {
+alan[y+player.pos.y+6][x+player.pos.x+3] = value;
+    }
+  });
+});
+}
+    audiofiles(){
+      this.ses = new Array();
+      this.ses[0] = new Audio();
+      this.ses[0].src=("1.mp3")
+      this.ses[0].loop=true
+      this.ses[1] = new Audio();
+      this.ses[1].src=("2.mp3")
+      this.ses[1].loop=true
+      this.ses[2] = new Audio();
+      this.ses[2].src=("3.mp3")
+      this.ses[2].loop=true
+      this.ses[3] = new Audio();
+      this.ses[3].src=("4.mp3")
+      this.ses[3].loop=true
+      this.ses[4] = new Audio();
+      this.ses[4].src=("5.mp3")
+      this.ses[4].loop=true
+      this.ses[5] = new Audio();
+      this.ses[5].src=("6.mp3")
+      this.ses[5].loop=true
+    }
+    timer(){
+      this.timer = setInterval(this.draw.bind(this),1000/60)
+    }
+    animation(){
+      this.moon.pos.y+=this.moon.speed
+      this.star1.pos.y+=this.star1.speed
+      this.star2.pos.y+=this.star2.speed
+      this.star3.pos.y+=this.star3.speed
+      this.star4.pos.y+=this.star4.speed
+      this.moon2.pos.y+=1
+      if (this.moon.pos.y==655) {
+          this.moon2.pos.y=-45
+}
+  if (this.moon2.pos.y==655) {
+    this.moon.pos.y=-45
+  }
+      if (this.star1.pos.y>700) {
+        return this.star1.pos.y=0
+      }
+      if (this.star2.pos.y>700) {
+        return this.star2.pos.y=0
+      }
+      if (this.star3.pos.y>700) {
+        return this.star3.pos.y=0
+      }
+    }
+    drawanim(){
+this.ctx.drawImage(this.images[0],102,556,35,35,600,this.moon.pos.y,100,100);
+this.ctx.drawImage(this.images[0],102,556,35,35,this.moon2.pos.x,this.moon2.pos.y,100,100);
+
+      this.ctx.drawImage(this.images[0],85,568,4,15,this.star1.pos.x,this.star1.pos.y,10,30);
+      this.ctx.drawImage(this.images[0],90,568,3,15,this.star2.pos.x,this.star2.pos.y,10,30);
+      this.ctx.drawImage(this.images[0],94,568,3,15,this.star3.pos.x,this.star3.pos.y,10,30);
+      this.ctx.drawImage(this.images[0],98,568,3,15,this.star4.pos.x,this.star4.pos.y,10,30);
+      this.ctx.drawImage(this.images[0],85,568,4,15,this.star1.pos.x+12,this.star1.pos.y-55,10,30);
+      this.ctx.drawImage(this.images[0],90,568,3,15,this.star2.pos.x+14,this.star2.pos.y+60,10,30);
+      this.ctx.drawImage(this.images[0],94,568,3,15,this.star3.pos.x-45,this.star3.pos.y-22,10,30);
+      this.ctx.drawImage(this.images[0],98,568,3,15,this.star4.pos.x-26,this.star4.pos.y-26,10,30);
+    }
+    draw(){
+    this.animation();
+    this.ctx.fillRect(0,0,770,700)
+    this.ctx.drawImage(this.images[0],0,0,255,230,0,0,770,700);
+    this.drawanim();
+
+
+    }
+}
+const play = new game();
+window.onload= () => play.timer();
+
+  </script>
+</html>
