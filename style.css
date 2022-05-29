@@ -1,0 +1,25 @@
+body{
+    background-color: rgb(230, 230, 230);
+}
+
+#href-linker{
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+
+    height: 300px;
+    width: 300px;
+    
+    display: grid;
+    justify-content: center;
+    align-items: center;
+
+    gap: 30px;
+}
+
+a{
+    font-size: 30px;
+    text-decoration: none;
+    color: blue;
+}

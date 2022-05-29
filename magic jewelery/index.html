@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html lang="tr" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Magic Jewelery</title>
+    <style>
+    @font-face {
+   font-family: myFirstFont;
+   src: url(pixel.ttf);
+}
+   body {
+     background: black;
+     font-size: 2em;
+     color: red;
+     text-align: center;
+   }
+   div {
+  font-family: myFirstFont;
+  font-size: 5vh;
+}
+canvas{
+  height: 75vh;
+}
+#sag{height: 75vh;
+width: 30vh;}
+#sol{height: 75vh;
+width: 20vh; }
+ </style>
+  </head>
+
+   <body>
+     <div id="score">
+     </div>
+    <img id="turuncu" src="turuncu.png" alt="" width="0" height="0" >
+    <img id="kırmızı" src="kırmızı.png" alt="" width="0" height="0">
+    <img id="mavi" src="mavi.png" alt="" width="0" height="0">
+    <img id="mor" src="mor.png" alt="" width="0" height="0">
+    <img id="delete" src="delete.png" alt="" width="0" height="0">
+    <img id="turuncu2" src="turuncu2.png" alt="" width="0" height="0">
+    <img id="yesil" src="yesil.png" alt="" width="0" height="0">
+    <img id="solboru" src="mj4.png" alt="" width="0" height="0">
+    <img id="sol" src="mj1.png" width="85">
+    <img id="gameover"src="gameover.png" alt="">
+    <img id="x"src="x.png" alt="">
+
+    	<canvas id="canvas" width="300" height="700"></canvas>
+      <img id="sag" src="mj2.png" width="198">
+    		<script type="text/javascript">
+        document.getElementById('score').innerHTML= "başlamak için enter'a bas"
+        var ses = new Array();
+        ses[0] = new Audio();
+        ses[0].src=("1.mp3")
+        ses[0].loop=true
+        ses[1] = new Audio();
+        ses[1].src=("2.mp3")
+        ses[1].loop=true
+        ses[2] = new Audio();
+        ses[2].src=("3.mp3")
+        ses[2].loop=true
+        ses[3] = new Audio();
+        ses[3].src=("4.mp3")
+        ses[3].loop=true
+        ses[4] = new Audio();
+        ses[4].src=("5.mp3")
+        ses[4].loop=true
+        ses[5] = new Audio();
+        ses[5].src=("6.mp3")
+        ses[5].loop=true
+
+        images = new Array();
+var canvas= document.getElementById('canvas');
+var context = canvas.getContext("2d");
+var scorediv=0
+var start=0
+var x=0
+var y=1
+var tf=true
+var z =true
+var k = true
+var kontrolol = 11
+var score = 1
+var gamee =1
+var deletes
+sesvar=0
+context.scale(50,50);
+context.fillStlye="black";
+context.fillRect(0,0,canvas.width,canvas.height);
+
+
+document.getElementById("turuncu").style.display = "none";
+document.getElementById("kırmızı").style.display = "none";
+document.getElementById("mavi").style.display = "none";
+document.getElementById("x").style.display = "none";
+document.getElementById("mor").style.display = "none";
+document.getElementById("turuncu2").style.display = "none";
+document.getElementById("yesil").style.display = "none";
+document.getElementById("solboru").style.display = "none";
+document.getElementById("gameover").style.display = "none";
+document.getElementById("delete").style.display = "none";
+
+solvesa= new Array();
+solvesa[0] = new Image();
+solvesa[0]= document.getElementById('sol');
+
+solvesa[1] = new Image();
+solvesa[1].src=("mj2.png");
+
+
+
+images[0] = new Image();
+images[0].src=("turuncu.png");
+images[1] = new Image();
+images[1] = document.getElementById('kırmızı');
+images[2] = new Image();
+images[2] = document.getElementById('mavi');
+images[3] = new Image();
+images[3] = document.getElementById('mor');
+images[4] = new Image();
+images[4] = document.getElementById('turuncu2');
+images[5] = new Image();
+images[5] = document.getElementById('yesil');
+images[6] = new Image();
+images[6] = document.getElementById('solboru');
+images[7] = new Image();
+images[7] = document.getElementById('gameover');
+images[8] = new Image();
+images[8] = document.getElementById('x');
+images[9] = new Image();
+images[9] = document.getElementById('delete');
+var a,b,c,d,e,f,g,h,an,na,cn,z
+a=1
+b=2
+c=3
+d=0
+e=0
+f=0
+h=0
+
+var dropcounter =0
+var dropinterval =1000
+
+var puzzle=[[0,a,0],
+[0,b,0],
+[0,c,0],
+]
+var puzzle1=[[0,c,0],
+[0,a,0],
+[0,b,0],
+]
+var puzzle2=[[0,b,0],
+[0,c,0],
+[0,a,0],
+]
+var player = {
+  pos:{x:0,
+  y:0},
+};
+var matrixs = new Array();
+matrixs[0]=puzzle
+matrixs[1]=puzzle1
+matrixs[2]=puzzle2
+matrixs[3]=puzzle
+
+var  lastTime=0
+
+function pieces(w,b) {
+  const matrix=[];
+  while (b--) {
+    matrix.push(new Array(w).fill(0))
+  }
+  return matrix}
+
+var alan = pieces(11,24);
+alan[20][3]=8
+alan[20][4]=8
+alan[20][5]=8
+alan[20][6]=8
+alan[20][7]=8
+alan[20][8]=8
+function alanisakla() {
+   matrixs[h].forEach((row, y) => {
+  row.forEach((value, x) => {
+    if (value!=0) {
+alan[y+player.pos.y+6][x+player.pos.x+3] = value;
+    }
+  });
+});
+}
+function draw() {
+if (gamee===1) {
+  context.fillStyle = '#000';
+  context.fillRect(0, 0, canvas.width, canvas.height);
+  drawMatrix(matrixs[h],player.pos);
+  alanicizarkadas();
+  }
+else  {
+  context.drawImage(images[7],0,0,6,14);
+  start=0
+
+}
+  };
+
+function drawMatrix(sekil,offset) {
+sekil.forEach((row, y) => {
+  row.forEach((value,x) => {
+  if (value==1) {
+   context.drawImage(images[0],x+offset.x,y+offset.y,1,1)
+ }
+ if (value==2) {
+   context.drawImage(images[1],x+offset.x,y+offset.y,1,1)
+ }
+ if (value==3) {
+   context.drawImage(images[2],x+offset.x,y+offset.y,1,1)}
+   if (value==4) {
+    context.drawImage(images[3],x+offset.x,y+offset.y,1,1)
+  }
+  if (value==5) {
+    context.drawImage(images[4],x+offset.x,y+offset.y,1,1)}
+  if (value==6) {
+    context.drawImage(images[5],x+offset.x,y+offset.y,1,1)}
+    if (value==11) {
+      context.drawImage(images[9],x+offset.x,y+offset.y,1,1)}
+    if (value==9) {
+      context.drawImage(images[6],x+offset.x,y+offset.y,1,1)}
+});
+});
+}
+draw();
+function alanicizarkadas() {
+  alan.forEach((item, y) => {
+    item.forEach((value,x) => {
+if (value!=0) {
+  if (value==1) {
+   context.drawImage(images[0],x-3,y-6,1,1)
+ }
+ if (value==2) {
+   context.drawImage(images[1],x-3,y-6,1,1)
+ }
+ if (value==3) {
+   context.drawImage(images[2],x-3,y-6,1,1)}
+   if (value==4) {
+    context.drawImage(images[3],x-3,y-6,1,1)
+  }
+  if (value==5) {
+    context.drawImage(images[4],x-3,y-6,1,1)
+  }
+  if (value==6) {
+    context.drawImage(images[5],x-3,y-6,1,1)}
+ if (value==7) {
+   context.drawImage(images[8],x-3,y-6,1,1)}
+   }
+    });
+  });
+}
+
+function kontrol1() {
+  if (player.pos.x==4&&alan[19][8]!=0) {
+  kontrolol =10
+  }
+  if (player.pos.x==3&&alan[19][7]!=0) {
+  kontrolol =10
+  }
+  else if (player.pos.x==2&&alan[19][6]!=0) {
+  kontrolol =10
+  }
+  else if (player.pos.x==1&&alan[19][5]!=0) {
+  kontrolol =10
+  }
+  else if (player.pos.x==0&&alan[19][4]!=0) {
+  kontrolol =10
+  }
+  else if (player.pos.x==-1&&alan[19][3]!=0) {
+  kontrolol =10
+  }
+  else {
+    kontrolol=11
+  }
+}
+function kontrol2() {
+  if (player.pos.x==4&&alan[18][8]!=0) {
+  kontrolol =9
+  }
+  if (player.pos.x==3&&alan[18][7]!=0) {
+  kontrolol =9
+  }
+  if (player.pos.x==2&&alan[18][6]!=0) {
+  kontrolol =9
+  }
+  if (player.pos.x==1&&alan[18][5]!=0) {
+  kontrolol =9
+  }
+  if (player.pos.x==0&&alan[18][4]!=0) {
+  kontrolol =9
+  }
+  if (player.pos.x==-1&&alan[18][3]!=0) {
+  kontrolol =9
+  }
+
+  if (player.pos.x==4&&alan[17][8]!=0) {
+  kontrolol =8
+  }
+  if (player.pos.x==3&&alan[17][7]!=0) {
+  kontrolol =8
+  }
+  if (player.pos.x==2&&alan[17][6]!=0) {
+  kontrolol =8
+  }
+  if (player.pos.x==1&&alan[17][5]!=0) {
+  kontrolol =8
+  }
+  if (player.pos.x==0&&alan[17][4]!=0) {
+  kontrolol =8
+  }
+  if (player.pos.x==-1&&alan[17][3]!=0) {
+  kontrolol =8
+  }
+  if (player.pos.x==4&&alan[16][8]!=0) {
+  kontrolol =7
+  }
+  if (player.pos.x==3&&alan[16][7]!=0) {
+  kontrolol =7
+  }
+  if (player.pos.x==2&&alan[16][6]!=0) {
+  kontrolol =7
+  }
+  if (player.pos.x==1&&alan[16][5]!=0) {
+  kontrolol =7
+  }
+  if (player.pos.x==0&&alan[16][4]!=0) {
+  kontrolol =7
+  }
+  if (player.pos.x==-1&&alan[16][3]!=0) {
+  kontrolol =7
+  }
+  if (player.pos.x==4&&alan[15][8]!=0) {
+  kontrolol =6
+  }
+  if (player.pos.x==3&&alan[15][7]!=0) {
+  kontrolol =6
+  }
+  if (player.pos.x==2&&alan[15][6]!=0) {
+  kontrolol =6
+  }
+  if (player.pos.x==1&&alan[15][5]!=0) {
+  kontrolol =6
+  }
+  if (player.pos.x==0&&alan[15][4]!=0) {
+  kontrolol =6
+  }
+  if (player.pos.x==-1&&alan[15][3]!=0) {
+  kontrolol =6
+  }
+  if (player.pos.x==4&&alan[14][8]!=0) {
+  kontrolol =5
+  }
+  if (player.pos.x==3&&alan[14][7]!=0) {
+  kontrolol =5
+  }
+  if (player.pos.x==2&&alan[14][6]!=0) {
+  kontrolol =5
+  }
+  if (player.pos.x==1&&alan[14][5]!=0) {
+  kontrolol =5
+  }
+  if (player.pos.x==0&&alan[14][4]!=0) {
+  kontrolol =5
+  }
+  if (player.pos.x==-1&&alan[14][3]!=0) {
+  kontrolol =5
+  }
+  if (player.pos.x==4&&alan[13][8]!=0) {
+  kontrolol =4
+  }
+  if (player.pos.x==3&&alan[13][7]!=0) {
+  kontrolol =4
+  }
+  if (player.pos.x==2&&alan[13][6]!=0) {
+  kontrolol =4
+  }
+  if (player.pos.x==1&&alan[13][5]!=0) {
+  kontrolol =4
+  }
+  if (player.pos.x==0&&alan[13][4]!=0) {
+  kontrolol =4
+  }
+  if (player.pos.x==-1&&alan[13][3]!=0) {
+  kontrolol =4
+  }
+  if (player.pos.x==4&&alan[12][8]!=0) {
+  kontrolol =3
+  }
+  if (player.pos.x==3&&alan[12][7]!=0) {
+  kontrolol =3
+  }
+  if (player.pos.x==2&&alan[12][6]!=0) {
+  kontrolol =3
+  }
+  if (player.pos.x==1&&alan[12][5]!=0) {
+  kontrolol =3
+  }
+  if (player.pos.x==0&&alan[12][4]!=0) {
+  kontrolol =3
+  }
+  if (player.pos.x==-1&&alan[12][3]!=0) {
+  kontrolol =3
+  }
+  if (player.pos.x==4&&alan[11][8]!=0) {
+  kontrolol =2
+  }
+  if (player.pos.x==3&&alan[11][7]!=0) {
+  kontrolol =2
+  }
+  if (player.pos.x==2&&alan[11][6]!=0) {
+  kontrolol =2
+  }
+  if (player.pos.x==1&&alan[11][5]!=0) {
+  kontrolol =2
+  }
+  if (player.pos.x==0&&alan[11][4]!=0) {
+  kontrolol =2
+  }
+  if (player.pos.x==-1&&alan[11][3]!=0) {
+  kontrolol =2
+  }
+  if (player.pos.x==4&&alan[10][8]!=0) {
+  kontrolol =1
+  }
+  if (player.pos.x==3&&alan[10][7]!=0) {
+  kontrolol =1
+  }
+  if (player.pos.x==2&&alan[10][6]!=0) {
+  kontrolol =1
+  }
+  if (player.pos.x==1&&alan[10][5]!=0) {
+  kontrolol =1
+  }
+  if (player.pos.x==0&&alan[10][4]!=0) {
+  kontrolol =1
+  }
+  if (player.pos.x==-1&&alan[10][3]!=0) {
+  kontrolol =1  }
+  if (player.pos.x==4&&alan[9][8]!=0) {
+  kontrolol =0
+  }
+  if (player.pos.x==3&&alan[9][7]!=0) {
+  kontrolol =0
+  }
+  if (player.pos.x==2&&alan[9][6]!=0) {
+  kontrolol =0
+  }
+  if (player.pos.x==1&&alan[9][5]!=0) {
+  kontrolol =0
+  }
+  if (player.pos.x==0&&alan[9][4]!=0) {
+  kontrolol =0
+  }
+  if (player.pos.x==-1&&alan[9][3]!=0) {
+  kontrolol =0  }
+  if (player.pos.x==4&&alan[8][8]!=0) {
+  kontrolol =-1
+  }
+  if (player.pos.x==3&&alan[8][7]!=0) {
+  kontrolol =-1  }
+  if (player.pos.x==2&&alan[8][6]!=0) {
+  kontrolol =-1
+  }
+  if (player.pos.x==1&&alan[8][5]!=0) {
+  kontrolol =-1
+  }
+  if (player.pos.x==0&&alan[8][4]!=0) {
+  kontrolol =-1
+  }
+  if (player.pos.x==-1&&alan[8][3]!=0) {
+  kontrolol =-1 }
+
+}
+function skor() {
+function dortlu() {
+  for (let y = 20; y > 0; --y) {
+    for (let i = 0; i < 9; i++) {
+          if (alan[y][i]===alan[y+1][i]&&alan[y][i]!=7&&alan[y][i]===alan[y+2][i]&&alan[y][i]===alan[y+3][i]&&alan[y][i]!=0&&alan[y-1][i]===0) {
+            alan[y+1][i]=0
+            alan[y+2][i]=0
+            alan[y+3][i]=0
+            alan[y][i]=0
+            sscore= score+4
+            scorediv=scorediv+4
+          }
+       if ((alan[y][i]===alan[y+1][i])&&(alan[y][i]===alan[y+2][i])&&(alan[y][i]===alan[y+3][i])&&(alan[y][i]!=0&&alan[y][i]!=7)) {
+        alan[y+3][i]=alan[y-1][i]
+        alan[y-1][i]=0
+        alan[y-2][i]=0
+        alan[y+1][i]=0
+        alan[y+2][i]=0
+        alan[y][i]=0
+        sscore= score+4
+        scorediv=scorediv+4
+      }
+}
+}
+}
+function uclu() {
+  for (let y = 20; y > 0; --y) {
+    for (let i = 0; i < 9; i++) {
+
+   if (alan[y][i]===alan[y+1][i]&&alan[y][i]===alan[y+2][i]&&alan[y][i]!=0&&alan[y][i]!=7) {
+        alan[y+2][i]=alan[y-1][i]
+        alan[y+1][i]=alan[y-2][i]
+        alan[y-1][i]=0
+        alan[y-2][i]=0
+        alan[y-3][i]=0
+        alan[y][i]=0
+        score= score+3
+        scorediv=scorediv+3
+
+      }
+        }
+          }
+}
+function besli() {
+  for (let y = 20; y > 0; --y) {
+    for (let i = 0; i < 9; i++) {
+      if (alan[y][i]===alan[y+1][i]&&alan[y][i]===alan[y+2][i]&&alan[y][i]===alan[y+3][i]
+        &&alan[y][i]===alan[y-1][i]&&alan[y][i]!=0&&alan[y][i]!=7) {
+          alan[y+1][i]=0
+          alan[y+2][i]=0
+          alan[y+3][i]=0
+          alan[y-1][i]=0
+          alan[y][i]=0
+          score= score+5
+          scorediv=scorediv+5
+          }
+    }
+        }
+}
+function carpraz() {
+  for (let y = 20; y > 0; --y) {
+    for (let i = 2; i < 9; i++) {
+       if (alan[y][i]===alan[y+1][i+1]&&alan[y][i]===alan[y+2][i+2]&&alan[y][i]!=0&&alan[y][i]!=7) {
+        alan[y][i]=0
+        alan[y+1][i+1]=0
+        alan[y+2][i+2]=0
+        score= score+3
+        scorediv=scorediv+3
+      }
+      else if (alan[y][i]===alan[y+1][i-1]&&alan[y][i]===alan[y+2][i-2]&&alan[y][i]!=0&&alan[y][i]!=7) {
+        alan[y][i]=0
+        alan[y+1][i-1]=0
+        alan[y+2][i-2]=0
+        score= score+3
+        scorediv=scorediv+3
+         }
+        }
+          }
+  }
+  function kontrol3() {
+    for (let y = 20; y > 7; --y) {
+      for (let i = 0; i < 9; i++) {
+        if ((alan[y][i]===0&&alan[y-1][i]!=0&&alan[y+1][i]!=0)||(alan[y][i]===0&&
+        alan[y-1][i]===0&&alan[y+1][i]!=0&&alan[y][i]!=7)) {
+          alan[y][i]=alan[y-1][i]
+          alan[y-1][i]=alan[y-2][i]
+          alan[y-2][i]=alan[y-3][i]
+          alan[y-3][i]=alan[y-4][i]
+          alan[y-4][i]=alan[y-5][i]
+          alan[y-5][i]=alan[y-6][i]
+          alan[y-6][i]=alan[y-7][i]
+        }
+          }
+            }
+              }
+function yan() {
+  for (let y = 20; y > 0; --y) {
+    for (let i = 0; i < 8; i++) {
+        if (alan[y][i]===alan[y][i+1]&&alan[y][i]===alan[y][i+2]&&alan[y][i]!=0&&alan[y][i]!=8&&alan[y][i]!=7)
+        {
+          alan[y][i]=0
+          alan[y][i+1]=0
+          alan[y][i+2]=0
+          score= score+3
+          scorediv=scorediv+3
+        }
+
+
+}
+}
+}
+function yandortlu() {
+  for (let y = 20; y > 0; --y) {
+    for (let i = 0; i < 7; i++) {
+        if (alan[y][i]===alan[y][i+1]&&alan[y][i]===alan[y][i+2]&&alan[y][i]!=0&&alan[y][i]!=8&&
+alan[y][i]===alan[y][i+3]&&alan[y][i]!=7)
+        {
+          alan[y][i]=0
+          alan[y][i+1]=0
+          alan[y][i+2]=0
+          alan[y][i+3]=0
+          score= score+4
+          scorediv=scorediv+4
+        }
+
+
+}
+}
+}
+function carprazdortlu() {
+  for (let y = 20; y > 0; --y) {
+    for (let i = 3; i < 9; i++) {
+       if (alan[y][i]===alan[y+1][i+1]&&alan[y][i]===alan[y+2][i+2]&&alan[y][i]!=0&&
+       alan[y][i]===alan[y+3][i+3]&&alan[y][i]!=7) {
+        alan[y][i]=0
+        alan[y+1][i+1]=0
+        alan[y+2][i+2]=0
+        alan[y+3][i+3]=0
+        score= score+4
+        scorediv=scorediv+4
+      }
+      else if (alan[y][i]===alan[y+1][i-1]&&alan[y][i]===alan[y+2][i-2]&&alan[y][i]!=0&&
+      alan[y][i]===alan[y+3][i-3]&&alan[y][i]!=7) {
+        alan[y][i]=0
+        alan[y+1][i-1]=0
+        alan[y+2][i-2]=0
+        alan[y+3][i-3]=0
+        score= score+4
+        scorediv=scorediv+4
+         }
+        }
+          }
+  }
+  function carprazbesli() {
+    for (let y = 20; y > 0; --y) {
+      for (let i = 3; i < 9; i++) {
+         if (alan[y][i]===alan[y+1][i+1]&&alan[y][i]===alan[y+2][i+2]&&alan[y][i]!=0&&
+         alan[y][i]===alan[y+3][i+3]&&alan[y][i]===alan[y+4][i+4]&&alan[y][i]!=7) {
+          alan[y][i]=0
+          alan[y+1][i+1]=0
+          alan[y+2][i+2]=0
+          alan[y+3][i+3]=0
+          alan[y+4][i+4]=0
+          score= score+5
+          scorediv=scorediv+5
+        }
+        else if (alan[y][i]===alan[y+1][i-1]&&alan[y][i]===alan[y+2][i-2]&&alan[y][i]!=0&&
+        alan[y][i]===alan[y+3][i-3]&&alan[y][i]===alan[y+4][i-4]&&alan[y][i]!=7) {
+          alan[y][i]=0
+          alan[y+1][i-1]=0
+          alan[y+2][i-2]=0
+          alan[y+3][i-3]=0
+          alan[y+4][i-4]=0
+          score= score+5
+          scorediv=scorediv+5
+           }
+          }
+            }
+
+    }
+    function yanbesli() {
+      for (let y = 20; y > 0; --y) {
+        for (let i = 0; i < 7; i++) {
+            if (alan[y][i]===alan[y][i+1]&&alan[y][i]===alan[y][i+2]&&alan[y][i]!=0&&alan[y][i]!=8&&
+    alan[y][i]===alan[y][i+3]&&alan[y][i]===alan[y][i+4]&&alan[y][i]!=7)
+            {
+              alan[y][i]=0
+              alan[y][i+1]=0
+              alan[y][i+2]=0
+              alan[y][i+3]=0
+              alan[y][i+4]=0
+              score= score+5
+              scorediv=scorediv+5
+            }
+
+
+    }
+    }
+    }
+              carprazbesli();
+              yanbesli();
+              carprazdortlu();
+              yandortlu();
+              carpraz();
+              besli();
+              dortlu();
+              uclu();
+              yan();
+              kontrol3();
+              }
+var sonzaman =0
+var dropct=0
+var over =1
+var returnmat=1
+function update(xxx =0) {
+
+  const deltatime= xxx- lastTime
+  lastTime=xxx
+  dropcounter+=deltatime
+  draw();
+  if ((dropcounter>dropinterval)&&start==1&&over==1) {
+    player.pos.y++
+    dropcounter=0
+    draw();
+    ses[sesvar].play();
+}
+kontrol1();
+kontrol2();
+skor();
+if (start===1) {
+
+  document.getElementById('score').innerHTML="score="+scorediv
+if (over===0) {
+  document.getElementById('score').innerHTML="GAMEOVER"+" "+scorediv
+
+}
+if (player.pos.y==kontrolol) {
+  d=1
+  skor();
+  alanisakla();
+  player.pos.y=0
+
+
+}
+if (deletes===1||deletes===2||deletes===3||deletes===4||deletes===5||deletes===6) {
+  deletes=-1
+
+}
+if (d==1) {
+  randomnumber = Math.floor(Math.random() * 6+1);
+  randomnumber2 = Math.floor(Math.random() * 6+1);
+  randomnumber3 = Math.floor(Math.random() * 6+1);
+  if (score>=25) {
+    matrixs[0] = [[0,11,0],
+    [0,11,0],
+    [0,11,0],
+    ]
+    matrixs[1] = [[0,11,0],
+    [0,11,0],
+    [0,11,0],
+    ]
+    matrixs[2] = [[0,11,0],
+    [0,11,0],
+    [0,11,0],
+    ]
+    matrixs[3] = [[0,11,0],
+    [0,11,0],
+    [0,11,0],
+    ]
+  }
+  else {
+  matrixs[0] = [[0,randomnumber,0],
+  [0,randomnumber2,0],
+  [0,randomnumber3,0],
+  ]
+  matrixs[1] = [[0,randomnumber3,0],
+  [0,randomnumber,0],
+  [0,randomnumber2,0],
+  ]
+  matrixs[2] = [[0,randomnumber2,0],
+  [0,randomnumber3,0],
+  [0,randomnumber,0],
+  ]
+  matrixs[3] = [[0,randomnumber,0],
+  [0,randomnumber2,0],
+  [0,randomnumber3,0],
+  ]
+  d=0
+  }
+}
+alan.forEach((item, i) => {
+  item.forEach((value, x) => {
+    if (value===11&&alan[i+1][x]!=8) {
+      deletes=alan[i+1][x]
+    }
+    if (alan[i][x]==deletes||alan[i][x]===11) {
+      alan[i][x]=0
+      score=0
+    }
+  });
+});
+if (score==0) {
+ses[sesvar].pause();
+sesvar++
+score=1
+}
+  if (sesvar===5) {
+sesvar=0
+}
+}
+requestAnimationFrame(update);
+
+};
+update();
+var ka=20
+var ba=9
+function updeta(xx=0) {
+  const gecenzaman= xx- sonzaman
+  sonzaman=xx
+  dropct+=gecenzaman
+  skor();
+if (kontrolol===-1&&(alan[8][3]!=0||alan[8][4]!=0||alan[8][5]!=0||alan[8][6]!=0||
+alan[8][7]!=0||alan[8][8]!=0)) {
+  ses[sesvar].pause();
+   over =0
+  if (ka>2) {
+    ses[5].play();
+  if (dropct>25) {
+    dropct=0
+    alan[ka][ba]=7
+    ba=ba-1
+    if (ba===3) {
+      dropct=0
+    alan[ka][ba]=7
+    ba=9
+      ka=ka-1
+    }
+  }
+}
+else {
+  ses[5].pause();
+}
+  }
+requestAnimationFrame(updeta);
+}
+document.addEventListener("keydown", () =>{
+  if (over===1) {
+if (start==1) {
+
+if (event.keyCode===37) {
+  if (player.pos.x==-1) {
+    return player.pos.x==-1
+  }
+  if (player.pos.x==0&&alan[player.pos.y+2+6][3]!=0) {
+    return player.pos.x==0}
+  if (player.pos.x==1&&alan[player.pos.y+2+6][4]!=0) {
+    return player.pos.x==1}
+  if (player.pos.x==2&&alan[player.pos.y+2+6][5]!=0) {
+    return player.pos.x==2}
+  if (player.pos.x==3&&alan[player.pos.y+2+6][6]!=0) {
+    return player.pos.x==3}
+  player.pos.x--
+}
+if (event.keyCode===38) {
+if (h===3) {
+return h=1
+}
+h++
+}
+if (event.keyCode===39) {
+  if (player.pos.x==4){
+    return player.pos.x==4
+  }
+  if (player.pos.x==-1&&alan[player.pos.y+2+6][4]!=0) {
+    return player.pos.x==-1}
+  if (player.pos.x==0&&alan[player.pos.y+2+6][5]!=0) {
+    return player.pos.x==0}
+  if (player.pos.x==1&&alan[player.pos.y+2+6][6]!=0) {
+    return player.pos.x==1}
+  if (player.pos.x==2&&alan[player.pos.y+2+6][7]!=0) {
+    return player.pos.x==2}
+    if (player.pos.x==3&&alan[player.pos.y+2+6][8]!=0) {
+      return player.pos.x==3}
+  player.pos.x++
+}
+
+if (event.keyCode ===40) {
+  player.pos.y+=1
+  dropcounter=0
+}}
+if (event.keyCode===13) {
+  start=1
+
+}
+  }
+});
+updeta();
+</script>
+<div>0.1
+</div>
+</body>
+</html>
